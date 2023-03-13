@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
 
 
 bream_length = [25.4, 26.3, 26.5, 29.0, 29.0, 29.7, 29.7, 30.0, 30.0, 30.7, 31.0, 31.0,
@@ -18,8 +19,20 @@ weight = bream_weight + smelt_weight
 fish_data = [[l, w] for l, w in zip(length, weight)]
 fish_target = [1] * 35 + [0] * 14
 
+input_arr = np.array(fish_data)
+target_arr = np.array(fish_target)
+
+np.random.seed(42)
+index = np.arange(49)
+np.random.shuffle(index)
+
+train_input = input_arr[index[:35]]
+train_target = target_arr[index[:35]]
+
+test_input = input_arr[index[35:]]
+test_target = target_arr[index[35:]]
+
 kn = KNeighborsClassifier()
-kn.fit(fish_data, fish_target)
-kn.score(fish_data, fish_target)
-result = kn.predict([[30, 600]])
-print(result)
+kn.fit(train_input, train_target)
+score = kn.score(test_input, test_target)
+print(score)
