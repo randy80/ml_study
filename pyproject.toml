@@ -10,7 +10,9 @@ packages = [{include = "ml_study"}]
 python = ">=3.10,<3.12"
 matplotlib = "^3.7.1"
 numpy = "^1.24.2"
-tensorflow = "^2.11.0"
+#tensorflow = "^2.11.0"
+tensorflow-macos = "2.10.0"
+tensorflow-metal = "0.6.0"
 scikit-learn = "^1.2.2"
 
 
