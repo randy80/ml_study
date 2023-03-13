@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ml-study"
+version = "0.1.0"
+description = ""
+authors = ["InSeong.Lee <randy80@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ml_study"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+matplotlib = "^3.7.1"
+numpy = "^1.24.2"
+tensorflow = "^2.11.0"
+scikit-learn = "^1.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
