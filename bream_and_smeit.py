@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
 
 
 bream_length = [25.4, 26.3, 26.5, 29.0, 29.0, 29.7, 29.7, 30.0, 30.0, 30.7, 31.0, 31.0,
@@ -16,23 +17,22 @@ smelt_weight = [6.7, 7.5, 7.0, 9.7, 9.8, 8.7, 10.0, 9.9, 9.8, 12.2, 13.4, 12.2, 
 length = bream_length + smelt_length
 weight = bream_weight + smelt_weight
 
-fish_data = [[l, w] for l, w in zip(length, weight)]
-fish_target = [1] * 35 + [0] * 14
+fish_data = np.column_stack((length, weight))
+fish_target = np.concatenate((np.ones(35), np.zeros(14)))
 
-input_arr = np.array(fish_data)
-target_arr = np.array(fish_target)
+train_input, test_input, train_target, test_target = train_test_split(
+    fish_data, fish_target, stratify=fish_target, random_state=42)
 
-np.random.seed(42)
-index = np.arange(49)
-np.random.shuffle(index)
-
-train_input = input_arr[index[:35]]
-train_target = target_arr[index[:35]]
-
-test_input = input_arr[index[35:]]
-test_target = target_arr[index[35:]]
+mean = np.mean(train_input, axis=0)
+std = np.std(train_input, axis=0)
+train_scaled = (train_input - mean) / std
 
 kn = KNeighborsClassifier()
-kn.fit(train_input, train_target)
-score = kn.score(test_input, test_target)
+kn.fit(train_scaled, train_target)
+
+test_scaled = (test_input - mean) / std
+score = kn.score(test_scaled, test_target)
 print(score)
+
+new = ([25, 150] - mean) / std
+print(kn.predict([new]))
